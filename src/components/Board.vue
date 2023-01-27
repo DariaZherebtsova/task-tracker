@@ -2,12 +2,12 @@
   <div class="board">
     <div
       class="column"
-      v-for="item in columns"
-      :key="item.id"
+      v-for="column in columns"
+      :key="column.id"
     >
       <Card
         class="card-list"
-        v-for="item in cards"
+        v-for="item in getCardByStage(column.code)"
         :key="item.id"
       />
     </div>
@@ -16,11 +16,27 @@
 
 <script setup lang="ts">
 import Card from '../components/Card.vue';
-import type { TCard } from '@/types/types';
+// import type { TCard } from '@/types/types';
+import { useBaseStore } from '@/stores/baseStore';
+import { storeToRefs } from 'pinia';
 
-const props = defineProps<{
-  cards: TCard[];
-}>();
+const baseStore = useBaseStore();
+
+console.log('---cards', baseStore.cards.length);
+
+const { getCardByStage } = storeToRefs(baseStore);
+
+// const cardsByStage = (stage: string) => baseStore.getCardByStage(stage);
+
+if (!baseStore.cards.length) {
+  try {
+    baseStore.getCards().then(() => {
+      console.log('---cards stage-3', baseStore.getCardByStage('stage-3'));
+    });
+  } catch (err) {
+    console.log('err getCards', err);
+  }
+}
 
 const columns = [
   {

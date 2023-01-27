@@ -1,6 +1,7 @@
 import { defineStore } from 'pinia';
 import type { TCard } from '@/types/types';
 import { getData } from '@/api/api';
+import { unref } from 'vue';
 
 type BaseStore = {
   cards: TCard[];
@@ -13,23 +14,13 @@ export const useBaseStore = defineStore('base', {
     } as BaseStore),
 
   getters: {
-    finishedTodos(state) {
-      return state.todos.filter((todo) => todo.isFinished);
-    },
-    unfinishedTodos(state) {
-      return state.todos.filter((todo) => !todo.isFinished);
-    },
-    /**
-     * @returns {{ text: string, id: number, isFinished: boolean }[]}
-     */
-    filteredTodos(state) {
-      if (this.filter === 'finished') {
-        // call other getters with autocompletion ✨
-        return this.finishedTodos;
-      } else if (this.filter === 'unfinished') {
-        return this.unfinishedTodos;
-      }
-      return this.todos;
+    getCardByStage: (state) => {
+      return (stage: string) => {
+        console.log('---getCardByStage', stage);
+        const result = state.cards.filter((card) => card.stage === stage);
+        console.log(result.length);
+        return result;
+      };
     },
   },
   actions: {
