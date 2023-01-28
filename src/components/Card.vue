@@ -1,8 +1,14 @@
 <template>
-  <div class="card">Карточка</div>
+  <div class="card">card {{ card.id }}</div>
 </template>
 
-<script setup lang="ts"></script>
+<script setup lang="ts">
+import type { TCard } from '@/types/types';
+
+const props = defineProps<{
+  card: TCard;
+}>();
+</script>
 
 <style>
 .card {

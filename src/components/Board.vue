@@ -1,30 +1,38 @@
 <template>
-  <div class="board">
-    <div
+  <div
+    class="board"
+    v-if="baseStore.cards.length"
+  >
+    <Column
       class="column"
       v-for="column in columns"
       :key="column.id"
-    >
-      <Card
-        class="card-list"
-        v-for="item in getCardByStage(column.code)"
-        :key="item.id"
-      />
-    </div>
+      :stage="column.code"
+    />
   </div>
+  <div v-else>Loading</div>
+  <draggable
+    v-model="columns"
+    item-key="id"
+  >
+    <template #item="{ element }">
+      <div>{{ element.name }}</div>
+    </template>
+  </draggable>
 </template>
 
 <script setup lang="ts">
-import Card from '../components/Card.vue';
+import Column from '../components/Column.vue';
 // import type { TCard } from '@/types/types';
 import { useBaseStore } from '@/stores/baseStore';
 import { storeToRefs } from 'pinia';
+import draggable from 'vuedraggable';
 
 const baseStore = useBaseStore();
 
 console.log('---cards', baseStore.cards.length);
 
-const { getCardByStage } = storeToRefs(baseStore);
+// const { getCardByStage } = storeToRefs(baseStore);
 
 // const cardsByStage = (stage: string) => baseStore.getCardByStage(stage);
 
