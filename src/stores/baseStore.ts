@@ -38,6 +38,18 @@ export const useBaseStore = defineStore('base', {
           name: 'Стадия 4',
           code: 'stage-4',
         },
+        {
+          id: 5,
+          sort: 30,
+          name: 'Стадия 3',
+          code: 'stage-3',
+        },
+        {
+          id: 6,
+          sort: 40,
+          name: 'Стадия 4',
+          code: 'stage-4',
+        },
       ],
       cards: [],
     } as BaseStore),
@@ -54,30 +66,27 @@ export const useBaseStore = defineStore('base', {
   },
   actions: {
     async getCards() {
-      getData().then((d) => {
-        this.cards = d as TCard[];
+      getData().then((data) => {
+        this.cards = data;
 
-        console.log('---getCards', d);
+        console.log('---getCards', data);
 
         this.columns.forEach((el) => {
           this.cardsByStage[el.code] = [];
         });
 
-        d.forEach((card: TCard) => {
+        data.forEach((card: TCard) => {
           this.cardsByStage[card.stage].push(card);
         });
 
-        console.log('---cardsByStage', this.cardsByStage);
+        // console.log('---cardsByStage', this.cardsByStage);
       });
     },
 
-    // setCardByStage: (state) => {
-    //   return (stage: string) => {
-    //     console.log('---getCardByStage', stage);
-    //     const result = state.cards.filter((card) => card.stage === stage);
-    //     console.log(result.length);
-    //     return result;
-    //   };
-    // },
+    changeCardStage(stage: string, id: number) {
+      const card = this.cardsByStage[stage].find((card) => card.id === id);
+      if (card) card.stage = stage;
+      console.log('--changeCardStage', this.cardsByStage[stage]);
+    },
   },
 });
