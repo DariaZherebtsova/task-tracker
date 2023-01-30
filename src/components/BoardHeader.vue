@@ -19,7 +19,6 @@ import { RouterLink } from 'vue-router';
 }
 
 .board-header__title {
-  font-family: 'Inter';
   font-weight: 700;
   font-size: 32px;
   line-height: 39px;

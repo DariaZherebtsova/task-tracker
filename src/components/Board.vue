@@ -7,7 +7,7 @@
       class="column"
       v-for="column in columns"
       :key="column.id"
-      :stage="column.code"
+      :column="column"
     />
   </div>
   <div v-else>---Loading---</div>

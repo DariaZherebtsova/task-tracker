@@ -8,8 +8,8 @@
       </div>
       <div class="card__body">
         <div>
-          <span class="card__score">Балл:</span>
-          {{ card.score }}
+          <span class="card__score-text">Балл: </span>
+          <span class="card__score-value">{{ card.score }}</span>
         </div>
       </div>
       <div
@@ -57,7 +57,7 @@ const props = defineProps<{
 
 <style>
 .card {
-  margin-bottom: 12px;
+  margin-bottom: 8px;
   padding: 12px 8px 12px 12px;
   min-width: 100px;
   height: 120px;
@@ -79,23 +79,37 @@ const props = defineProps<{
 
 .card__header-title {
   margin-right: 8px;
-  font-family: 'Inter';
   font-style: normal;
   font-weight: 600;
-  font-size: 18px;
+  font-size: 14px;
+  line-height: 17px;
 }
 
 .card__body {
   flex-grow: 1;
 }
 
-.card__score {
+.card__score-text {
   color: var(--grey-dark-2);
+  font-weight: 400;
+  font-size: 12px;
+  line-height: 15px;
+}
+
+.card__score-value {
+  font-weight: 600;
+  font-size: 12px;
+  line-height: 15px;
 }
 
 .card-menu {
   width: 24px;
 }
+
+/* .card__header-icon {
+  width: 17px;
+  height: 17px;
+} */
 
 .card__header-icon path {
   fill: var(--grey-dark-2);
@@ -116,7 +130,6 @@ const props = defineProps<{
   background: var(--grey-light);
   border: 1px solid var(--grey-middle);
   border-radius: 4px;
-  font-family: 'Inter';
   font-style: normal;
   font-weight: 400;
   font-size: 12px;

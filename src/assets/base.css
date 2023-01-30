@@ -4,8 +4,7 @@
 :root {
 
   --grey-light: #E5E9EF;
-  --grey-middle: #D2DAE4;
-  
+  --grey-middle: #D5DCE5;
   --grey-dark-1: #b3b3b3;
   --grey-dark-2: #71747c;
   --grey-dark-3: #7D8CA1;
@@ -49,9 +48,7 @@ body {
   color: var(--color-text);
   background: var(--color-background-bottom);
   transition: color 0.5s, background-color 0.5s;
-  line-height: 1.6;
-  font-family: Inter, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu,
-    Cantarell, 'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif;
+  font-family: 'Inter';
   font-size: 15px;
   text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;
