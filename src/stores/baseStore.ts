@@ -1,57 +1,21 @@
 import { defineStore } from 'pinia';
-import type { TCard, TColumn } from '@/types/types';
-import { getData } from '@/api/api';
-import { unref } from 'vue';
+import type { TCard, TColumn, TProject } from '@/types/types';
+import { getCards, getColumns, getProgects } from '@/api/api';
 
 type BaseStore = {
   cards: TCard[];
   cardsByStage: Record<string, TCard[]>;
   columns: TColumn[];
+  progects: Record<string, TProject>;
 };
 
 export const useBaseStore = defineStore('base', {
   state: () =>
     ({
       cardsByStage: {},
-      columns: [
-        {
-          id: 1,
-          sort: 10,
-          name: 'Стадия 1',
-          code: 'stage-1',
-        },
-        {
-          id: 2,
-          sort: 20,
-          name: 'Стадия 2',
-          code: 'stage-2',
-        },
-        {
-          id: 3,
-          sort: 30,
-          name: 'Стадия 3',
-          code: 'stage-3',
-        },
-        {
-          id: 4,
-          sort: 40,
-          name: 'Стадия 4',
-          code: 'stage-4',
-        },
-        {
-          id: 5,
-          sort: 30,
-          name: 'Стадия 3',
-          code: 'stage-3',
-        },
-        {
-          id: 6,
-          sort: 40,
-          name: 'Стадия 4',
-          code: 'stage-4',
-        },
-      ],
+      columns: [],
       cards: [],
+      progects: {},
     } as BaseStore),
 
   getters: {
@@ -65,22 +29,40 @@ export const useBaseStore = defineStore('base', {
     },
   },
   actions: {
-    async getCards() {
-      getData().then((data) => {
-        this.cards = data;
+    async getData() {
+      Promise.all([getColumns(), getCards(), getProgects()])
+        .then(([columns, cards, progects]) => {
+          this.columns = columns;
+          this.cards = cards;
 
-        console.log('---getCards', data);
+          progects.forEach((project: TProject) => {
+            this.progects[project.code] = project;
+          });
+          console.log('---this.progects', this.progects);
 
-        this.columns.forEach((el) => {
-          this.cardsByStage[el.code] = [];
+          this.columns.forEach((el) => {
+            this.cardsByStage[el.code] = [];
+          });
+          cards.forEach((card: TCard) => {
+            // добавляем название проекта/проектов на русском
+            card.projectName = this.createProjectList(card.project);
+            this.cardsByStage[card.stage].push(card);
+          });
+          console.log('---cardsByStage', this.cardsByStage);
+        })
+        .catch((err) => {
+          console.log('--err getData', err);
         });
+    },
 
-        data.forEach((card: TCard) => {
-          this.cardsByStage[card.stage].push(card);
-        });
-
-        // console.log('---cardsByStage', this.cardsByStage);
-      });
+    // формируем массив с русскими названиями проектов
+    createProjectList(cardProjects: boolean | [] | string): boolean | string[] {
+      if (!cardProjects) return false;
+      if (typeof cardProjects === 'string')
+        return [this.progects[cardProjects].name];
+      if (Array.isArray(cardProjects)) {
+        return cardProjects.map((project) => this.progects[project].name);
+      } else return false;
     },
 
     changeCardStage(stage: string, id: number) {

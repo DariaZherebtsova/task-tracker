@@ -30,9 +30,9 @@ console.log('---cards', baseStore.cards.length);
 
 if (!baseStore.cards.length) {
   try {
-    baseStore.getCards();
+    baseStore.getData();
   } catch (err) {
-    console.log('err getCards', err);
+    console.log('err getData', err);
   }
 }
 

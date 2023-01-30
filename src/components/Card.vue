@@ -12,8 +12,17 @@
           {{ card.score }}
         </div>
       </div>
-      <div class="card__tags">
-        <div class="tt-tag">{{ card.project }}</div>
+      <div
+        class="card__tags"
+        v-if="card.project"
+      >
+        <div
+          class="tt-tag"
+          v-for="(projects, index) in card.projectName"
+          :key="index"
+        >
+          {{ projects }}
+        </div>
       </div>
     </div>
     <div class="card-menu">
@@ -23,14 +32,27 @@
 </template>
 
 <script setup lang="ts">
+import { useBaseStore } from '@/stores/baseStore';
 import type { TCard } from '@/types/types';
 import IconMenu from '@/assets/overflowMenuSecond.svg';
 import IconNoteEdit from '@/assets/noteEdit.svg';
 import IconGarbage from '@/assets/garbage.svg';
+import { projects } from '@/mock-data/data';
+
+const baseStore = useBaseStore();
 
 const props = defineProps<{
   card: TCard;
 }>();
+
+// const createProjectList = (cardProjects: boolean | [] | string) => {
+//   if (!cardProjects) return false;
+//   if (typeof cardProjects === 'string')
+//     return [baseStore.progects[cardProjects].name];
+//   if (Array.isArray(cardProjects)) {
+//     return cardProjects.map((project) => baseStore.progects[project].name);
+//   }
+// };
 </script>
 
 <style>
@@ -81,6 +103,11 @@ const props = defineProps<{
 
 .card-menu__icon path {
   fill: var(--grey-dark-1);
+}
+
+.card__tags {
+  display: flex;
+  gap: 5px;
 }
 
 .tt-tag {
