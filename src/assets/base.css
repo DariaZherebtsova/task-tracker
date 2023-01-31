@@ -1,5 +1,6 @@
 /* color palette from <https://github.com/vuejs/theme> */
 @import url("https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap");
+@import url("https://unpkg.com/vue-next-select/dist/index.min.css");
 
 :root {
 
@@ -9,8 +10,10 @@
   --grey-dark-2: #71747c;
   --grey-dark-3: #7D8CA1;
   
-
+  --blue: #7CABE3;
   --white: #ffffff;
+
+  --ms-max-height: 6rem;
 }
 
 /* semantic color variables for this project */

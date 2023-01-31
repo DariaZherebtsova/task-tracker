@@ -1,7 +1,7 @@
 <template>
   <div
     class="board"
-    v-if="baseStore.cards.length"
+    v-if="!isEmpty(baseStore.cardsByStage)"
   >
     <Column
       class="column"
@@ -14,19 +14,29 @@
 </template>
 
 <script setup lang="ts">
+import { onMounted, watchEffect } from 'vue';
 import Column from '../components/Column.vue';
 // import type { TCard } from '@/types/types';
 import { useBaseStore } from '@/stores/baseStore';
-import { storeToRefs } from 'pinia';
-import draggable from 'vuedraggable';
+import { saveLocal } from '@/services/saveLocal';
+import { isEmpty } from '@/utils/index';
 
 const baseStore = useBaseStore();
 
 console.log('---cards', baseStore.cards.length);
 
-// const { getCardByStage } = storeToRefs(baseStore);
-
-// const cardsByStage = (stage: string) => baseStore.getCardByStage(stage);
+onMounted(() => {
+  watchEffect(() => {
+    console.log('---watchEffect', Object.keys(baseStore.cardsByStage).length);
+    if (Object.keys(baseStore.cardsByStage).length) {
+      saveLocal({
+        columns: baseStore.columns,
+        project: baseStore.progects,
+        cardsByStage: baseStore.cardsByStage,
+      });
+    }
+  });
+});
 
 if (!baseStore.cards.length) {
   try {

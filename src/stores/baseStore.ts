@@ -1,6 +1,8 @@
 import { defineStore } from 'pinia';
 import type { TCard, TColumn, TProject } from '@/types/types';
-import { getCards, getColumns, getProgects } from '@/api/api';
+import api from '@/api/api';
+import { getLocal } from '@/services/saveLocal';
+import { isEmpty } from '@/utils/index';
 
 type BaseStore = {
   cards: TCard[];
@@ -30,7 +32,16 @@ export const useBaseStore = defineStore('base', {
   },
   actions: {
     async getData() {
-      Promise.all([getColumns(), getCards(), getProgects()])
+      const localData = getLocal();
+      console.log('---store getData localData', isEmpty(localData));
+      if (!isEmpty(localData)) {
+        this.columns = localData.columns;
+        this.cardsByStage = localData.cardsByStage;
+        this.progects = localData.projects;
+        return;
+      }
+      console.log('---запрашиваем---');
+      Promise.all([api.getColumns(), api.getCards(), api.getProgects()])
         .then(([columns, cards, progects]) => {
           this.columns = columns;
           this.cards = cards;
@@ -56,7 +67,9 @@ export const useBaseStore = defineStore('base', {
     },
 
     // формируем массив с русскими названиями проектов
-    createProjectList(cardProjects: boolean | [] | string): boolean | string[] {
+    createProjectList(
+      cardProjects: boolean | string[] | string
+    ): boolean | string[] {
       if (!cardProjects) return false;
       if (typeof cardProjects === 'string')
         return [this.progects[cardProjects].name];
