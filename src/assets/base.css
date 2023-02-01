@@ -3,8 +3,8 @@
 @import url("https://unpkg.com/vue-next-select/dist/index.min.css");
 
 :root {
-
-  --grey-light: #E5E9EF;
+  --grey-light-1: #f0f3f8;
+  --grey-light-2: #E5E9EF;
   --grey-middle: #D5DCE5;
   --grey-dark-1: #b3b3b3;
   --grey-dark-2: #71747c;
@@ -19,7 +19,7 @@
 
 /* semantic color variables for this project */
 :root {
-  --color-background-bottom: var(--grey-light);
+  --color-background-bottom: var(--grey-light-2);
   --color-background-middle: var(--grey-middle);
   --color-background-top: var(--white);
 }

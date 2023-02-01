@@ -127,7 +127,7 @@ const props = defineProps<{
 .tt-tag {
   width: 68px;
   height: 23px;
-  background: var(--grey-light);
+  background: var(--grey-light-2);
   border: 1px solid var(--grey-middle);
   border-radius: 4px;
   font-style: normal;

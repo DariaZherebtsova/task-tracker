@@ -10,20 +10,31 @@
             </div>
             <div class="modal__subtitle">{{ data.subtitle }}</div>
 
-            <div class="modal-body">
-              <slot name="body"> default body </slot>
-            </div>
+            <div class="modal__label">Заголовок *:</div>
+            <input
+              class="modal__input"
+              type="text"
+            />
 
-            <div class="modal-footer">
-              <slot name="footer">
-                default footer
-                <button
-                  class="modal-default-button"
-                  @click="$emit('close')"
-                >
-                  OK
-                </button>
-              </slot>
+            <div class="modal__label">Проект:</div>
+            <Select
+              class="modal__select"
+              :options="options"
+            ></Select>
+
+            <div class="modal__label">Балл *:</div>
+            <input
+              class="modal__input modal__input_small"
+              type="number"
+            />
+
+            <div class="modal__action">
+              <button
+                class="modal__submit-button"
+                @click="saveAll"
+              >
+                Добавить
+              </button>
             </div>
           </div>
         </div>
@@ -33,6 +44,7 @@
 </template>
 
 <script setup lang="ts">
+import Select from '@/components/common/Select.vue';
 import IconCloseBig from '@/assets/closeBig.svg';
 
 const props = defineProps<{
@@ -40,6 +52,8 @@ const props = defineProps<{
     subtitle: string;
   };
 }>();
+
+const options = ['Batman', 'Robin', 'Joker'];
 </script>
 
 <style>
@@ -63,7 +77,7 @@ const props = defineProps<{
 .modal-container {
   width: 380px;
   margin: 0px auto;
-  padding: 20px 30px;
+  padding: 20px 30px 30px;
   background-color: #fff;
   transition: all 0.3s ease;
   border-radius: 4px;
@@ -93,6 +107,40 @@ const props = defineProps<{
   color: var(--grey-dark-2);
 }
 
+.modal__label {
+  margin-top: 20px;
+  margin-bottom: 4px;
+  font-weight: 400;
+  font-size: 12px;
+  line-height: 15px;
+  color: var(--grey-dark-2);
+}
+
+.modal__input {
+  padding-left: 16px;
+  width: 100%;
+  height: 32px;
+  border: none;
+  background-color: var(--grey-light-1);
+  border-radius: 4px;
+  font-weight: 400;
+  font-size: 13px;
+  line-height: 16px;
+}
+
+.modal__input_small {
+  width: 80px;
+}
+
+.modal__input:focus {
+  outline: 1px solid var(--grey-middle);
+}
+
+.modal__select.tt-select.vue-select {
+  background-color: var(--grey-light-1);
+  width: 100%;
+}
+
 .modal-body {
   margin: 20px 0;
 }
@@ -101,14 +149,24 @@ const props = defineProps<{
   float: right;
 }
 
-/*
- * The following styles are auto-applied to elements with
- * transition="modal" when their visibility is toggled
- * by Vue.js.
- *
- * You can easily play with the modal transition by editing
- * these styles.
- */
+.modal__action {
+  margin-top: 40px;
+  display: flex;
+  justify-content: center;
+}
+
+.modal__submit-button {
+  padding: 8px 20px;
+  color: var(--white);
+  background: var(--blue);
+  border-radius: 4px;
+  border: none;
+  cursor: pointer;
+  font-family: 'Inter';
+  font-weight: 400;
+  font-size: 13px;
+  line-height: 16px;
+}
 
 .modal-enter {
   opacity: 0;
