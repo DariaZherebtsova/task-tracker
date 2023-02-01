@@ -83,5 +83,15 @@ export const useBaseStore = defineStore('base', {
       if (card) card.stage = stage;
       console.log('--changeCardStage', this.cardsByStage[stage]);
     },
+
+    sortCardsUp(stage: string) {
+      console.log('---sortCardsUp', stage);
+      this.cardsByStage[stage].sort((a: TCard, b: TCard) => a.score - b.score);
+    },
+
+    sortCardsDown(stage: string) {
+      console.log('---sortCardsDown', stage);
+      this.cardsByStage[stage].sort((a: TCard, b: TCard) => b.score - a.score);
+    },
   },
 });

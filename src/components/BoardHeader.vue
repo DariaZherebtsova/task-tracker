@@ -16,9 +16,19 @@
         v-model="selectedProject"
         :options="options"
       /> -->
-      <button class="board-header__button">
-        <RouterLink to="/add-card">Добавить карточку</RouterLink>
+      <button
+        class="board-header__button"
+        @click="showModal = true"
+      >
+        Добавить карточку
+        <!-- <RouterLink to="/add-card">Добавить карточку</RouterLink> -->
       </button>
+      <AddCardModal
+        v-if="showModal"
+        @close="showModal = false"
+      >
+        <h3 slot="header">custom header</h3>
+      </AddCardModal>
       <button
         class="board-header__button"
         @click="saveAll"
@@ -30,11 +40,10 @@
 </template>
 
 <script setup lang="ts">
-import Multiselect from '@vueform/multiselect';
-import '@vueform/multiselect/themes/default.css';
+import { ref } from 'vue';
 import VueSelect from 'vue-next-select';
 import 'vue-next-select/dist/index.min.css';
-
+import AddCardModal from '@/components/AddCardModal.vue';
 import { RouterLink } from 'vue-router';
 import { useBaseStore } from '@/stores/baseStore';
 import api from '@/api/api';
@@ -43,6 +52,8 @@ const baseStore = useBaseStore();
 
 const selectedProject = null;
 const options = ['Batman', 'Robin', 'Joker'];
+
+const showModal = ref(false);
 
 const saveAll = () => {
   console.log('--saveAll');
@@ -80,21 +91,21 @@ const saveAll = () => {
 .board-header__select.vue-select {
   height: 32px;
   width: 120px;
-  background: #D5DCE5;
+  background: #d5dce5;
   border-radius: 4px;
   border: none;
 }
 
 .board-header__select .vue-dropdown {
-  border: 1px solid #D2DAE4;
+  border: 1px solid #d2dae4;
 }
 
 .board-header__select .vue-dropdown-item.highlighted {
-  background-color: #7CABE3;
+  background-color: #7cabe3;
 }
 
 .board-header__select .vue-dropdown-item.selected.highlighted {
-  background-color: #D2DAE4;
+  background-color: #d2dae4;
 }
 
 .board-header__select input {
