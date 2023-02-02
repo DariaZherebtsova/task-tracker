@@ -8,7 +8,9 @@ type BaseStore = {
   cards: TCard[];
   cardsByStage: Record<string, TCard[]>;
   columns: TColumn[];
-  progects: Record<string, TProject>;
+  projects: Record<string, TProject>;
+  projectsList: TProject[];
+  selectedProject: string;
 };
 
 export const useBaseStore = defineStore('base', {
@@ -17,7 +19,9 @@ export const useBaseStore = defineStore('base', {
       cardsByStage: {},
       columns: [],
       cards: [],
-      progects: {},
+      projects: {},
+      projectsList: [],
+      selectedProject: '',
     } as BaseStore),
 
   getters: {
@@ -29,6 +33,52 @@ export const useBaseStore = defineStore('base', {
         return result;
       };
     },
+    filtredCards: (state) => {
+      if (!state.selectedProject) return state.cardsByStage;
+
+      const filtredCardsByStage: Record<string, TCard[]> = {};
+      state.columns.forEach((el) => {
+        filtredCardsByStage[el.code] = state.cardsByStage[el.code].filter(
+          (card) => {
+            console.log('---card.project', card.project);
+            if (!card.project) return false;
+            if (typeof card.project === 'string') {
+              return card.project === state.selectedProject;
+            }
+            if (Array.isArray(card.project)) {
+              return card.project.includes(state.selectedProject);
+            }
+          }
+        );
+      });
+      console.log('--filtredCardsByStage', filtredCardsByStage);
+      return filtredCardsByStage;
+    },
+
+    filtredCardsss: (state) => {
+      return (project: string) => {
+        console.log('--filtredCards', project);
+        if (!project) return state.cardsByStage;
+
+        const filtredCardsByStage: Record<string, TCard[]> = {};
+        state.columns.forEach((el) => {
+          filtredCardsByStage[el.code] = state.cardsByStage[el.code].filter(
+            (card) => {
+              console.log('---card.project', card.project);
+              if (!card.project) return false;
+              if (typeof card.project === 'string') {
+                return card.project == project;
+              }
+              if (Array.isArray(card.project)) {
+                return card.project.includes(project);
+              }
+            }
+          );
+        });
+        console.log('--filtredCardsByStage', filtredCardsByStage);
+        return filtredCardsByStage;
+      };
+    },
   },
   actions: {
     async getData() {
@@ -37,19 +87,30 @@ export const useBaseStore = defineStore('base', {
       if (!isEmpty(localData)) {
         this.columns = localData.columns;
         this.cardsByStage = localData.cardsByStage;
-        this.progects = localData.projects;
+        this.projects = localData.projects;
+        this.projectsList = Object.values(localData.projects);
         return;
       }
       console.log('---запрашиваем---');
-      Promise.all([api.getColumns(), api.getCards(), api.getProgects()])
-        .then(([columns, cards, progects]) => {
+      Promise.all([api.getColumns(), api.getCards(), api.getProjects()])
+        .then(([columns, cards, projects]) => {
           this.columns = columns;
           this.cards = cards;
+          this.projectsList = [
+            {
+              id: 0,
+              code: '',
+              name: 'Все проекты',
+              sort: 0,
+            },
+            ...projects,
+          ];
+          console.log('---projects', projects);
 
-          progects.forEach((project: TProject) => {
-            this.progects[project.code] = project;
+          projects.forEach((project: TProject) => {
+            this.projects[project.code] = project;
           });
-          console.log('---this.progects', this.progects);
+          console.log('---this.projects', this.projects);
 
           this.columns.forEach((el) => {
             this.cardsByStage[el.code] = [];
@@ -72,9 +133,9 @@ export const useBaseStore = defineStore('base', {
     ): boolean | string[] {
       if (!cardProjects) return false;
       if (typeof cardProjects === 'string')
-        return [this.progects[cardProjects].name];
+        return [this.projects[cardProjects].name];
       if (Array.isArray(cardProjects)) {
-        return cardProjects.map((project) => this.progects[project].name);
+        return cardProjects.map((project) => this.projects[project].name);
       } else return false;
     },
 
@@ -92,6 +153,10 @@ export const useBaseStore = defineStore('base', {
     sortCardsDown(stage: string) {
       console.log('---sortCardsDown', stage);
       this.cardsByStage[stage].sort((a: TCard, b: TCard) => b.score - a.score);
+    },
+
+    setSelectedProject(project: string) {
+      this.selectedProject = project;
     },
   },
 });

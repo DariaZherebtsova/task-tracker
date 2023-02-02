@@ -48,9 +48,9 @@ const props = defineProps<{
 // const createProjectList = (cardProjects: boolean | [] | string) => {
 //   if (!cardProjects) return false;
 //   if (typeof cardProjects === 'string')
-//     return [baseStore.progects[cardProjects].name];
+//     return [baseStore.projects[cardProjects].name];
 //   if (Array.isArray(cardProjects)) {
-//     return cardProjects.map((project) => baseStore.progects[project].name);
+//     return cardProjects.map((project) => baseStore.projects[project].name);
 //   }
 // };
 </script>

@@ -16,7 +16,7 @@ const api = {
       }, 1000);
     }),
 
-  getProgects: async (): Promise<TProject[]> =>
+  getProjects: async (): Promise<TProject[]> =>
     await new Promise((resolve) => {
       setTimeout(() => {
         resolve(projects);

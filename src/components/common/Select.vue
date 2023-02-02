@@ -1,8 +1,10 @@
 <template>
   <vue-select
     class="tt-select"
-    v-model="selectedValue"
+    :modelValue="selectedValue"
+    @update:modelValue="selectUpdate"
     :options="options"
+    :label-by="label"
     close-on-select
     :min="1"
     placeholder="Не выбрано"
@@ -10,15 +12,23 @@
 </template>
 
 <script setup lang="ts">
+import type { stringLiteral } from '@babel/types';
 import { ref } from 'vue';
 import VueSelect from 'vue-next-select';
 import 'vue-next-select/dist/index.min.css';
 
+const emit = defineEmits(['select']);
+
 const props = defineProps<{
   options: string[];
+  label: string;
 }>();
 const selectedValue = ref(null);
 
+const selectUpdate = (val) => {
+  console.log('--selectUpdate', val);
+  emit('select', val);
+};
 </script>
 
 <style>
@@ -34,6 +44,12 @@ const selectedValue = ref(null);
   border: 1px solid #d2dae4;
 }
 
+.tt-select .vue-dropdown-item {
+  padding-left: 8px;
+  font-size: 13px;
+  font-family: 'Inter';
+}
+
 .tt-select .vue-dropdown-item.highlighted {
   background-color: #7cabe3;
 }
@@ -43,7 +59,7 @@ const selectedValue = ref(null);
 }
 
 .tt-select .vue-input input {
-  padding-left: 16px;
+  /* padding-left: 16px; */
   line-height: 24px;
   /* text-align: center; */
 }

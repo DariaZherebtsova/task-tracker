@@ -73,16 +73,23 @@ const props = defineProps<{
 //   console.log('---onMounted', list);
 // });
 
-const { cardsByStage } = storeToRefs(baseStore);
+// const { filtredCards } = storeToRefs(baseStore);
+// const cardsByStage = computed(() => baseStore.filtredCards);
 
-const list = ref(cardsByStage.value[props.column.code]);
+// const list = ref(cardsByStage.value[props.column.code]);
+
+const list = computed(() => baseStore.filtredCards[props.column.code]);
 
 const pressedUpSortBtn = ref(false);
 const pressedDownSortBtn = ref(false);
 
 const showModal = ref(false);
 
-const modalData = computed(() => ({ subtitle: props.column.name }));
+const modalData = computed(() => ({
+  subtitle: props.column.name,
+  options: baseStore.projectsList,
+  cardId: baseStore.cards.length + 1,
+}));
 
 const log1 = (val) => {
   console.log(`drag ${props.column.code}`, val);

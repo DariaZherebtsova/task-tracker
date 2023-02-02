@@ -14,18 +14,22 @@
             <input
               class="modal__input"
               type="text"
+              @blur="setTitle"
             />
 
             <div class="modal__label">Проект:</div>
             <Select
               class="modal__select"
-              :options="options"
+              :options="data.options"
+              label="name"
+              @select="projectSelected"
             ></Select>
 
             <div class="modal__label">Балл *:</div>
             <input
               class="modal__input modal__input_small"
               type="number"
+              @blur="setScore"
             />
 
             <div class="modal__action">
@@ -46,14 +50,38 @@
 <script setup lang="ts">
 import Select from '@/components/common/Select.vue';
 import IconCloseBig from '@/assets/closeBig.svg';
+import type { TCard, TProject } from '@/types/types';
 
 const props = defineProps<{
   data: {
     subtitle: string;
+    options: [];
+    cardId: number;
   };
 }>();
 
-const options = ['Batman', 'Robin', 'Joker'];
+let newCard: TCard = {
+  id: props.data.cardId,
+  title: '',
+  stage: '',
+  project: false,
+  score: 1,
+};
+
+const setTitle = (payload: FocusEvent) => {
+  console.log('--setTitle', (<HTMLInputElement>payload.target).value);
+  newCard.title = (<HTMLInputElement>payload.target).value;
+};
+
+const setScore = (payload: FocusEvent) => {
+  console.log('--setScore', (<HTMLInputElement>payload.target).value);
+  newCard.score = Number((<HTMLInputElement>payload.target).value);
+};
+
+const projectSelected = (project: TProject) => {
+  console.log('modal projectSelected', project.code);
+  newCard.project = project.code;
+};
 </script>
 
 <style>
@@ -139,6 +167,10 @@ const options = ['Batman', 'Robin', 'Joker'];
 .modal__select.tt-select.vue-select {
   background-color: var(--grey-light-1);
   width: 100%;
+}
+
+.modal__select .vue-input input {
+  padding-left: 12px;
 }
 
 .modal-body {

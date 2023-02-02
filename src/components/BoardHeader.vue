@@ -3,19 +3,12 @@
     <div class="board-header__title">Карточки</div>
     <div class="board-header__actions">
       <div class="board-header__label">Проект:</div>
-      <vue-select
+      <Select
         class="board-header__select"
-        v-model="selectedProject"
-        :options="options"
-        close-on-select
-        :min="1"
-        placeholder="Не выбрано"
-      ></vue-select>
-      <!-- <Multiselect
-        class="board-header__select"
-        v-model="selectedProject"
-        :options="options"
-      /> -->
+        :options="filterOptions"
+        label="name"
+        @select="projectSelected"
+      ></Select>
       <button
         class="board-header__button"
         @click="showModal = true"
@@ -40,9 +33,10 @@
 </template>
 
 <script setup lang="ts">
-import { ref } from 'vue';
-import VueSelect from 'vue-next-select';
-import 'vue-next-select/dist/index.min.css';
+import { ref, computed } from 'vue';
+// import VueSelect from 'vue-next-select';
+// import 'vue-next-select/dist/index.min.css';
+import Select from '@/components/common/Select.vue';
 import AddCardModal from '@/components/AddCardModal.vue';
 import { RouterLink } from 'vue-router';
 import { useBaseStore } from '@/stores/baseStore';
@@ -50,14 +44,19 @@ import api from '@/api/api';
 
 const baseStore = useBaseStore();
 
-const selectedProject = null;
-const options = ['Batman', 'Robin', 'Joker'];
+// const selectedProject = null;
+const filterOptions = computed(() => baseStore.projectsList);
 
 const showModal = ref(false);
 
 const saveAll = () => {
   console.log('--saveAll');
   api.saveCards(baseStore.cardsByStage);
+};
+
+const projectSelected = (val) => {
+  console.log('--projectSelected', val);
+  baseStore.setSelectedProject(val.code);
 };
 </script>
 
@@ -96,7 +95,7 @@ const saveAll = () => {
   border: none;
 }
 
-.board-header__select .vue-dropdown {
+/* .board-header__select .vue-dropdown {
   border: 1px solid #d2dae4;
 }
 
@@ -106,7 +105,7 @@ const saveAll = () => {
 
 .board-header__select .vue-dropdown-item.selected.highlighted {
   background-color: #d2dae4;
-}
+} */
 
 .board-header__select input {
   line-height: 24px;
