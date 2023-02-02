@@ -5,6 +5,7 @@
     @update:modelValue="selectUpdate"
     :options="options"
     :label-by="label"
+    :multiple="multiple"
     close-on-select
     :min="1"
     placeholder="Не выбрано"
@@ -12,7 +13,6 @@
 </template>
 
 <script setup lang="ts">
-import type { stringLiteral } from '@babel/types';
 import { ref } from 'vue';
 import VueSelect from 'vue-next-select';
 import 'vue-next-select/dist/index.min.css';
@@ -22,8 +22,10 @@ const emit = defineEmits(['select']);
 const props = defineProps<{
   options: string[];
   label: string;
+  multiple: boolean;
 }>();
-const selectedValue = ref(null);
+
+const selectedValue = ref([]);
 
 const selectUpdate = (val) => {
   console.log('--selectUpdate', val);

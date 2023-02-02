@@ -7,6 +7,7 @@
         class="board-header__select"
         :options="filterOptions"
         label="name"
+        :multiple="false"
         @select="projectSelected"
       ></Select>
       <button
@@ -44,7 +45,6 @@ import api from '@/api/api';
 
 const baseStore = useBaseStore();
 
-// const selectedProject = null;
 const filterOptions = computed(() => baseStore.projectsList);
 
 const showModal = ref(false);

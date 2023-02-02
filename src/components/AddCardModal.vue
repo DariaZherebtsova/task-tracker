@@ -6,7 +6,12 @@
           <div class="modal-container">
             <div class="modal__header">
               <div class="modal__title">Добавление</div>
-              <IconCloseBig class="modal__close-icon" />
+              <button
+                class="modal__close-button"
+                @click="emit('close')"
+              >
+                <IconCloseBig class="modal__close-icon" />
+              </button>
             </div>
             <div class="modal__subtitle">{{ data.subtitle }}</div>
 
@@ -16,14 +21,26 @@
               type="text"
               @blur="setTitle"
             />
+            <div 
+              class="modal__error-message"
+              :class="{ visible: showError.title }"
+            >
+              обязательное поле
+            </div>
 
-            <div class="modal__label">Проект:</div>
+            <div class="modal__label modal__label-optional">Проект:</div>
             <Select
               class="modal__select"
               :options="data.options"
               label="name"
+              :multiple="true"
               @select="projectSelected"
             ></Select>
+            <div 
+              class="modal__error-message"
+            >
+              обязательное поле
+            </div>
 
             <div class="modal__label">Балл *:</div>
             <input
@@ -31,11 +48,17 @@
               type="number"
               @blur="setScore"
             />
+            <div 
+              class="modal__error-message"
+              :class="{ visible: showError.score }"
+            >
+              обязательное поле
+            </div>
 
             <div class="modal__action">
               <button
                 class="modal__submit-button"
-                @click="saveAll"
+                @click="submit"
               >
                 Добавить
               </button>
@@ -48,6 +71,8 @@
 </template>
 
 <script setup lang="ts">
+import { reactive } from 'vue';
+import {v4 as uuidv4} from 'uuid';
 import Select from '@/components/common/Select.vue';
 import IconCloseBig from '@/assets/closeBig.svg';
 import type { TCard, TProject } from '@/types/types';
@@ -55,18 +80,27 @@ import type { TCard, TProject } from '@/types/types';
 const props = defineProps<{
   data: {
     subtitle: string;
-    options: [];
-    cardId: number;
+    options: TProject[];
+    // cardId: number;
+    stage: string;
+    saveCard: (card: TCard) => void;
   };
 }>();
 
+const emit = defineEmits(['close']);
+
 let newCard: TCard = {
-  id: props.data.cardId,
+  id: uuidv4(),
   title: '',
-  stage: '',
+  stage: props.data.stage,
   project: false,
-  score: 1,
+  score: -1,
 };
+
+const showError = reactive({
+  title: false,
+  score: false
+});
 
 const setTitle = (payload: FocusEvent) => {
   console.log('--setTitle', (<HTMLInputElement>payload.target).value);
@@ -78,10 +112,34 @@ const setScore = (payload: FocusEvent) => {
   newCard.score = Number((<HTMLInputElement>payload.target).value);
 };
 
-const projectSelected = (project: TProject) => {
-  console.log('modal projectSelected', project.code);
-  newCard.project = project.code;
+const projectSelected = (projects: TProject[]) => {
+  console.log('modal projectSelected', projects.length);
+  if (projects.length === 1) {
+    if (projects[0].name === 'Не выбрано') {
+      newCard.project = false;
+    } else {
+      newCard.project = projects[0].code;
+      newCard.projectName = [projects[0].name];
+    }
+  } else {
+    newCard.project = projects.map(item => item.code);
+    newCard.projectName = projects.map(item => item.name);
+  }
 };
+
+const submit = () => {
+  if (newCard.title === '') {
+    showError.title = true;
+  } else showError.title = false;
+
+  if (newCard.score === -1) {
+    showError.score = true;
+  } else showError.score = false;
+
+  console.log('--submit', newCard);
+  props.data.saveCard(newCard);
+  emit('close');
+}
 </script>
 
 <style>
@@ -116,6 +174,16 @@ const projectSelected = (project: TProject) => {
   justify-content: space-between;
 }
 
+.modal__close-button {
+  border: none;
+  background-color: transparent;
+  cursor: pointer;
+}
+
+.modal__close-button:hover .modal__close-icon path {
+  fill: var(--grey-dark-4);
+}
+
 .modal__close-icon path {
   fill: var(--grey-dark-2);
 }
@@ -136,12 +204,21 @@ const projectSelected = (project: TProject) => {
 }
 
 .modal__label {
-  margin-top: 20px;
+  margin-top: 10px;
   margin-bottom: 4px;
   font-weight: 400;
   font-size: 12px;
   line-height: 15px;
   color: var(--grey-dark-2);
+}
+
+.modal__error-message {
+  font-size: 12px;
+  color: var(--white);
+}
+
+.modal__error-message.visible{
+  color: var(--red);
 }
 
 .modal__input {

@@ -5,7 +5,8 @@ import { getLocal } from '@/services/saveLocal';
 import { isEmpty } from '@/utils/index';
 
 type BaseStore = {
-  cards: TCard[];
+  // cards: TCard[];
+  // cardsNumber: number;
   cardsByStage: Record<string, TCard[]>;
   columns: TColumn[];
   projects: Record<string, TProject>;
@@ -17,8 +18,9 @@ export const useBaseStore = defineStore('base', {
   state: () =>
     ({
       cardsByStage: {},
+      // cardsNumber: 0,
       columns: [],
-      cards: [],
+      // cards: [],
       projects: {},
       projectsList: [],
       selectedProject: '',
@@ -54,31 +56,6 @@ export const useBaseStore = defineStore('base', {
       console.log('--filtredCardsByStage', filtredCardsByStage);
       return filtredCardsByStage;
     },
-
-    filtredCardsss: (state) => {
-      return (project: string) => {
-        console.log('--filtredCards', project);
-        if (!project) return state.cardsByStage;
-
-        const filtredCardsByStage: Record<string, TCard[]> = {};
-        state.columns.forEach((el) => {
-          filtredCardsByStage[el.code] = state.cardsByStage[el.code].filter(
-            (card) => {
-              console.log('---card.project', card.project);
-              if (!card.project) return false;
-              if (typeof card.project === 'string') {
-                return card.project == project;
-              }
-              if (Array.isArray(card.project)) {
-                return card.project.includes(project);
-              }
-            }
-          );
-        });
-        console.log('--filtredCardsByStage', filtredCardsByStage);
-        return filtredCardsByStage;
-      };
-    },
   },
   actions: {
     async getData() {
@@ -87,6 +64,7 @@ export const useBaseStore = defineStore('base', {
       if (!isEmpty(localData)) {
         this.columns = localData.columns;
         this.cardsByStage = localData.cardsByStage;
+        // this.cardsNumber = localData.cardsNumber;
         this.projects = localData.projects;
         this.projectsList = Object.values(localData.projects);
         return;
@@ -95,16 +73,18 @@ export const useBaseStore = defineStore('base', {
       Promise.all([api.getColumns(), api.getCards(), api.getProjects()])
         .then(([columns, cards, projects]) => {
           this.columns = columns;
-          this.cards = cards;
+          // this.cards = cards;
+          // this.cardsNumber = cards.length;
           this.projectsList = [
             {
               id: 0,
               code: '',
-              name: 'Все проекты',
+              name: 'Не выбрано',
               sort: 0,
             },
             ...projects,
           ];
+          // this.projectsList = projects;
           console.log('---projects', projects);
 
           projects.forEach((project: TProject) => {
@@ -157,6 +137,11 @@ export const useBaseStore = defineStore('base', {
 
     setSelectedProject(project: string) {
       this.selectedProject = project;
+    },
+
+    addCard(card: TCard) {
+      console.log('---addCaaard');
+      this.cardsByStage[card.stage].push(card);
     },
   },
 });

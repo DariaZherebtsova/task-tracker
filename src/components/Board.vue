@@ -23,22 +23,23 @@ import { isEmpty } from '@/utils/index';
 
 const baseStore = useBaseStore();
 
-console.log('---cards', baseStore.cards.length);
+// console.log('---cards', baseStore.cards.length);
 
 onMounted(() => {
   watchEffect(() => {
-    console.log('---watchEffect', Object.keys(baseStore.cardsByStage).length);
-    if (Object.keys(baseStore.cardsByStage).length) {
+    console.log('---watchEffect', !isEmpty(baseStore.cardsByStage));
+    if (!isEmpty(baseStore.cardsByStage)) {
       saveLocal({
         columns: baseStore.columns,
         projects: baseStore.projects,
         cardsByStage: baseStore.cardsByStage,
+        // cardsNumber: baseStore.cardsNumber,
       });
     }
   });
 });
 
-if (!baseStore.cards.length) {
+if (isEmpty(baseStore.cardsByStage)) {
   try {
     baseStore.getData();
   } catch (err) {

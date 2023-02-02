@@ -88,7 +88,9 @@ const showModal = ref(false);
 const modalData = computed(() => ({
   subtitle: props.column.name,
   options: baseStore.projectsList,
-  cardId: baseStore.cards.length + 1,
+  // cardId: baseStore.cardsNumber + 1,
+  stage: props.column.code,
+  saveCard: baseStore.addCard,
 }));
 
 const log1 = (val) => {
