@@ -6,6 +6,7 @@
       <Select
         class="board-header__select"
         :options="filterOptions"
+        :initValue="[]"
         label="name"
         :multiple="false"
         @select="projectSelected"

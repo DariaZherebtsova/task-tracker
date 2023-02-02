@@ -3,8 +3,18 @@
     <div class="card-wrapper">
       <div class="card__header">
         <div class="card__header-title">{{ card.title }}</div>
-        <IconNoteEdit class="card__header-icon" />
-        <IconGarbage class="card__header-icon" />
+        <button
+          class="card__icon-button"
+          @click="showModal = true"
+        >
+          <IconNoteEdit class="card__header-icon" />
+        </button>
+        <button
+          class="card__icon-button"
+          @click="deleteCard"
+        >
+          <IconGarbage class="card__header-icon" />
+        </button>
       </div>
       <div class="card__body">
         <div>
@@ -13,11 +23,11 @@
         </div>
       </div>
       <div
-        class="card__tags"
+        class="card__tags-wrapper"
         v-if="card.project"
       >
         <div
-          class="tt-tag"
+          class="card__tag"
           v-for="(projects, index) in card.projectName"
           :key="index"
         >
@@ -28,31 +38,45 @@
     <div class="card-menu">
       <IconMenu class="card-menu__icon" />
     </div>
+    <AddCardModal
+      v-if="showModal"
+      @close="showModal = false"
+      :data="modalData"
+    >
+    </AddCardModal>
   </div>
 </template>
 
 <script setup lang="ts">
+import { ref, computed } from 'vue';
 import { useBaseStore } from '@/stores/baseStore';
+import AddCardModal from '@/components/AddCardModal.vue';
 import type { TCard } from '@/types/types';
 import IconMenu from '@/assets/overflowMenuSecond.svg';
 import IconNoteEdit from '@/assets/noteEdit.svg';
 import IconGarbage from '@/assets/garbage.svg';
-import { projects } from '@/mock-data/data';
 
 const baseStore = useBaseStore();
 
 const props = defineProps<{
   card: TCard;
+  stageName: string;
 }>();
 
-// const createProjectList = (cardProjects: boolean | [] | string) => {
-//   if (!cardProjects) return false;
-//   if (typeof cardProjects === 'string')
-//     return [baseStore.projects[cardProjects].name];
-//   if (Array.isArray(cardProjects)) {
-//     return cardProjects.map((project) => baseStore.projects[project].name);
-//   }
-// };
+const showModal = ref(false);
+
+const modalData = computed(() => ({
+  edit: true,
+  card: props.card,
+  subtitle: props.stageName,
+  options: baseStore.projectsList,
+  stage: props.card.stage,
+  saveCard: baseStore.editCard,
+}));
+
+const deleteCard = () => {
+  baseStore.deleteCard(props.card);
+};
 </script>
 
 <style>
@@ -74,7 +98,7 @@ const props = defineProps<{
 
 .card__header {
   display: flex;
-  align-items: center;
+  /* align-items: center; */
 }
 
 .card__header-title {
@@ -119,22 +143,29 @@ const props = defineProps<{
   fill: var(--grey-dark-1);
 }
 
-.card__tags {
+.card__tags-wrapper {
   display: flex;
   gap: 5px;
 }
 
-.tt-tag {
+.card__tag {
   width: 68px;
   height: 23px;
-  background: var(--grey-light-2);
   border: 1px solid var(--grey-middle);
   border-radius: 4px;
+  background: var(--grey-light-2);
   font-style: normal;
   font-weight: 400;
   font-size: 12px;
   line-height: 23px;
   text-align: center;
   color: var(--grey-dark-3);
+}
+
+.card__icon-button {
+  padding: 0;
+  border: none;
+  background-color: transparent;
+  cursor: pointer;
 }
 </style>

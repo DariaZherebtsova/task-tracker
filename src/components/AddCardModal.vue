@@ -5,7 +5,7 @@
         <div class="modal-wrapper">
           <div class="modal-container">
             <div class="modal__header">
-              <div class="modal__title">Добавление</div>
+              <div class="modal__title">{{ data.edit ? 'Обновление' : 'Добавление' }}</div>
               <button
                 class="modal__close-button"
                 @click="emit('close')"
@@ -19,6 +19,7 @@
             <input
               class="modal__input"
               type="text"
+              :value="data.edit ? data.card?.title : ''"
               @blur="setTitle"
             />
             <div 
@@ -31,7 +32,8 @@
             <div class="modal__label modal__label-optional">Проект:</div>
             <Select
               class="modal__select"
-              :options="data.options"
+              :options="baseStore.projectsList"
+              :initValue="data.edit ? currentProjects : []"
               label="name"
               :multiple="true"
               @select="projectSelected"
@@ -46,6 +48,7 @@
             <input
               class="modal__input modal__input_small"
               type="number"
+              :value="data.edit ? data.card?.score : ''"
               @blur="setScore"
             />
             <div 
@@ -60,7 +63,7 @@
                 class="modal__submit-button"
                 @click="submit"
               >
-                Добавить
+              {{ data.edit ? 'Обновить' : 'Добавить' }}
               </button>
             </div>
           </div>
@@ -71,35 +74,43 @@
 </template>
 
 <script setup lang="ts">
-import { reactive } from 'vue';
-import {v4 as uuidv4} from 'uuid';
+import { reactive, computed } from 'vue';
+import { useBaseStore } from '@/stores/baseStore';
 import Select from '@/components/common/Select.vue';
 import IconCloseBig from '@/assets/closeBig.svg';
 import type { TCard, TProject } from '@/types/types';
 
+const baseStore = useBaseStore();
+
 const props = defineProps<{
   data: {
+    edit: boolean;
+    card: TCard;
     subtitle: string;
-    options: TProject[];
-    // cardId: number;
     stage: string;
-    saveCard: (card: TCard) => void;
   };
 }>();
 
 const emit = defineEmits(['close']);
 
-let newCard: TCard = {
-  id: uuidv4(),
-  title: '',
-  stage: props.data.stage,
-  project: false,
-  score: -1,
-};
+let newCard: TCard = { ...props.data.card};
 
 const showError = reactive({
   title: false,
   score: false
+});
+
+const currentProjects = computed(() => {
+  const card = props.data.card;
+  if (!card) return [];
+  if (!card.project) return [];
+  if (typeof card.project === 'string') {
+    return [baseStore.projects[card.project]]
+  }
+  if (Array.isArray(card.project)) {
+    return card.project.map((item => baseStore.projects[item]))
+  }
+  return [];
 });
 
 const setTitle = (payload: FocusEvent) => {
@@ -128,6 +139,8 @@ const projectSelected = (projects: TProject[]) => {
 };
 
 const submit = () => {
+  // имитация валидации
+  // лучше взять библиотеку для валидации
   if (newCard.title === '') {
     showError.title = true;
   } else showError.title = false;
@@ -137,7 +150,11 @@ const submit = () => {
   } else showError.score = false;
 
   console.log('--submit', newCard);
-  props.data.saveCard(newCard);
+  if (props.data.edit) {
+    baseStore.editCard(newCard)
+  } else {
+    baseStore.addCard(newCard)
+  }
   emit('close');
 }
 </script>

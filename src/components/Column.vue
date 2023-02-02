@@ -32,7 +32,10 @@
       @change="log1"
     >
       <template #item="{ element }">
-        <Card :card="element" />
+        <Card
+          :card="element"
+          :stage-name="column.name"
+        />
       </template>
     </draggable>
     <div class="column-action">
@@ -53,8 +56,7 @@
 </template>
 
 <script setup lang="ts">
-import { onMounted, ref, computed } from 'vue';
-import { storeToRefs } from 'pinia';
+import { ref, computed } from 'vue';
 import { useBaseStore } from '@/stores/baseStore';
 import Card from '../components/Card.vue';
 import AddCardModal from '@/components/AddCardModal.vue';
@@ -62,6 +64,7 @@ import IconArrowDown from '@/assets/arrowDown.svg';
 import IconArrowUp from '@/assets/arrowUp.svg';
 import draggable from 'vuedraggable';
 import type { TColumn } from '@/types/types';
+import { v4 as uuidv4 } from 'uuid';
 
 const baseStore = useBaseStore();
 
@@ -73,11 +76,6 @@ const props = defineProps<{
 //   console.log('---onMounted', list);
 // });
 
-// const { filtredCards } = storeToRefs(baseStore);
-// const cardsByStage = computed(() => baseStore.filtredCards);
-
-// const list = ref(cardsByStage.value[props.column.code]);
-
 const list = computed(() => baseStore.filtredCards[props.column.code]);
 
 const pressedUpSortBtn = ref(false);
@@ -86,11 +84,16 @@ const pressedDownSortBtn = ref(false);
 const showModal = ref(false);
 
 const modalData = computed(() => ({
+  edit: false,
+  card: {
+    id: uuidv4(),
+    title: '',
+    stage: props.column.code,
+    project: false,
+    score: -1,
+  },
   subtitle: props.column.name,
-  options: baseStore.projectsList,
-  // cardId: baseStore.cardsNumber + 1,
   stage: props.column.code,
-  saveCard: baseStore.addCard,
 }));
 
 const log1 = (val) => {
@@ -117,13 +120,12 @@ const sortDown = () => {
     baseStore.sortCardsDown(props.column.code);
   }
 };
-
-const addCartToColumn = () => {};
 </script>
 
 <style>
 .column {
   min-width: 320px;
+  height: fit-content;
   background-color: var(--color-background-middle);
   padding: 12px;
 }

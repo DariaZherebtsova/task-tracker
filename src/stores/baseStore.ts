@@ -67,6 +67,15 @@ export const useBaseStore = defineStore('base', {
         // this.cardsNumber = localData.cardsNumber;
         this.projects = localData.projects;
         this.projectsList = Object.values(localData.projects);
+        this.projectsList = [
+          {
+            id: 0,
+            code: '',
+            name: 'Не выбрано',
+            sort: 0,
+          },
+          ...this.projectsList,
+        ];
         return;
       }
       console.log('---запрашиваем---');
@@ -142,6 +151,20 @@ export const useBaseStore = defineStore('base', {
     addCard(card: TCard) {
       console.log('---addCaaard');
       this.cardsByStage[card.stage].push(card);
+    },
+
+    editCard(card: TCard) {
+      console.log('---editCaaard');
+      const index = this.cardsByStage[card.stage].findIndex(
+        (item) => item.id === card.id
+      );
+      this.cardsByStage[card.stage][index] = card;
+    },
+
+    deleteCard(card: TCard) {
+      this.cardsByStage[card.stage] = this.cardsByStage[card.stage].filter(
+        (item) => item.id !== card.id
+      );
     },
   },
 });

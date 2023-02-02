@@ -20,12 +20,13 @@ import 'vue-next-select/dist/index.min.css';
 const emit = defineEmits(['select']);
 
 const props = defineProps<{
-  options: string[];
+  initValue: Array<any>;
+  options: Array<any>;
   label: string;
   multiple: boolean;
 }>();
 
-const selectedValue = ref([]);
+const selectedValue = ref(props.initValue);
 
 const selectUpdate = (val) => {
   console.log('--selectUpdate', val);
