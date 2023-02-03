@@ -52,9 +52,9 @@ import { ref, computed } from 'vue';
 import { useBaseStore } from '@/stores/baseStore';
 import AddCardModal from '@/components/AddCardModal.vue';
 import type { TCard } from '@/types/types';
-import IconMenu from '@/assets/overflowMenuSecond.svg';
-import IconNoteEdit from '@/assets/noteEdit.svg';
-import IconGarbage from '@/assets/garbage.svg';
+import IconMenu from '@/assets/icons/overflowMenuSecond.svg';
+import IconNoteEdit from '@/assets/icons/noteEdit.svg';
+import IconGarbage from '@/assets/icons/garbage.svg';
 
 const baseStore = useBaseStore();
 
@@ -98,7 +98,6 @@ const deleteCard = () => {
 
 .card__header {
   display: flex;
-  /* align-items: center; */
 }
 
 .card__header-title {
@@ -129,11 +128,6 @@ const deleteCard = () => {
 .card-menu {
   width: 24px;
 }
-
-/* .card__header-icon {
-  width: 17px;
-  height: 17px;
-} */
 
 .card__header-icon path {
   fill: var(--grey-dark-2);

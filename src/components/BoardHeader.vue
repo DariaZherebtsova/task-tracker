@@ -22,7 +22,6 @@
         v-if="showModal"
         @close="showModal = false"
       >
-        <h3 slot="header">custom header</h3>
       </AddCardModal>
       <button
         class="board-header__button"
@@ -36,13 +35,12 @@
 
 <script setup lang="ts">
 import { ref, computed } from 'vue';
-// import VueSelect from 'vue-next-select';
-// import 'vue-next-select/dist/index.min.css';
 import Select from '@/components/common/Select.vue';
 import AddCardModal from '@/components/AddCardModal.vue';
 import { RouterLink } from 'vue-router';
 import { useBaseStore } from '@/stores/baseStore';
 import api from '@/api/api';
+import type { TProject } from '@/types/types';
 import { toast } from 'vue3-toastify';
 import 'vue3-toastify/dist/index.css';
 
@@ -62,7 +60,7 @@ const saveAll = () => {
   }
 };
 
-const projectSelected = (val) => {
+const projectSelected = (val: TProject) => {
   baseStore.setSelectedProject(val.code);
 };
 </script>
@@ -101,18 +99,6 @@ const projectSelected = (val) => {
   border-radius: 4px;
   border: none;
 }
-
-/* .board-header__select .vue-dropdown {
-  border: 1px solid #d2dae4;
-}
-
-.board-header__select .vue-dropdown-item.highlighted {
-  background-color: #7cabe3;
-}
-
-.board-header__select .vue-dropdown-item.selected.highlighted {
-  background-color: #d2dae4;
-} */
 
 .board-header__select input {
   line-height: 24px;

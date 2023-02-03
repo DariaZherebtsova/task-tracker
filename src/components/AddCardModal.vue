@@ -77,7 +77,7 @@
 import { reactive, computed } from 'vue';
 import { useBaseStore } from '@/stores/baseStore';
 import Select from '@/components/common/Select.vue';
-import IconCloseBig from '@/assets/closeBig.svg';
+import IconCloseBig from '@/assets/icons/closeBig.svg';
 import type { TCard, TProject } from '@/types/types';
 
 const baseStore = useBaseStore();
@@ -114,17 +114,14 @@ const currentProjects = computed(() => {
 });
 
 const setTitle = (payload: FocusEvent) => {
-  console.log('--setTitle', (<HTMLInputElement>payload.target).value);
   newCard.title = (<HTMLInputElement>payload.target).value;
 };
 
 const setScore = (payload: FocusEvent) => {
-  console.log('--setScore', (<HTMLInputElement>payload.target).value);
   newCard.score = Number((<HTMLInputElement>payload.target).value);
 };
 
 const projectSelected = (projects: TProject[]) => {
-  console.log('modal projectSelected', projects.length);
   if (projects.length === 1) {
     if (projects[0].name === 'Не выбрано') {
       newCard.project = false;
@@ -149,7 +146,6 @@ const submit = () => {
     showError.score = true;
   } else showError.score = false;
 
-  console.log('--submit', newCard);
   if (props.data.edit) {
     baseStore.editCard(newCard)
   } else {

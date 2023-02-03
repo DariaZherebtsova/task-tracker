@@ -1,4 +1,3 @@
-/* color palette from <https://github.com/vuejs/theme> */
 @import url("https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap");
 @import url("https://unpkg.com/vue-next-select/dist/index.min.css");
 
@@ -19,26 +18,11 @@
   --ms-max-height: 6rem;
 }
 
-/* semantic color variables for this project */
 :root {
   --color-background-bottom: var(--grey-light-2);
   --color-background-middle: var(--grey-middle);
   --color-background-top: var(--white);
 }
-
-/* @media (prefers-color-scheme: dark) {
-  :root {
-    --color-background: var(--vt-c-black);
-    --color-background-soft: var(--vt-c-black-soft);
-    --color-background-mute: var(--vt-c-black-mute);
-
-    --color-border: var(--vt-c-divider-dark-2);
-    --color-border-hover: var(--vt-c-divider-dark-1);
-
-    --color-heading: var(--vt-c-text-dark-1);
-    --color-text: var(--vt-c-text-dark-2);
-  }
-} */
 
 *,
 *::before,
@@ -51,7 +35,6 @@
 
 body {
   min-height: 100vh;
-  color: var(--color-text);
   background: var(--color-background-bottom);
   transition: color 0.5s, background-color 0.5s;
   font-family: 'Inter';

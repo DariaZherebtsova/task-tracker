@@ -5,7 +5,7 @@ import Vue3Toastify, { type ToastContainerOptions } from 'vue3-toastify';
 import App from './App.vue';
 import router from './router';
 
-import './assets/main.css';
+import './assets/base.css';
 
 const app = createApp(App);
 

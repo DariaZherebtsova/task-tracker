@@ -66,6 +66,6 @@ const columns = computed(() => baseStore.columns);
 }
 
 .v-enter-active {
-  transition: opacity 0.5s ease;
+  transition: opacity 1s ease;
 }
 </style>

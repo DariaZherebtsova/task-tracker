@@ -29,7 +29,6 @@ const props = defineProps<{
 const selectedValue = ref(props.initValue);
 
 const selectUpdate = (val) => {
-  console.log('--selectUpdate', val);
   emit('select', val);
 };
 </script>
@@ -62,9 +61,7 @@ const selectUpdate = (val) => {
 }
 
 .tt-select .vue-input input {
-  /* padding-left: 16px; */
   line-height: 24px;
-  /* text-align: center; */
 }
 
 .tt-select .vue-select-header .icon.arrow-downward {

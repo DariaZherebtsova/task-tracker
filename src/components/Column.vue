@@ -29,7 +29,7 @@
       :list="list"
       item-key="id"
       group="my-group"
-      @change="log1"
+      @change="onDrag"
     >
       <template #item="{ element }">
         <Card
@@ -60,8 +60,8 @@ import { ref, computed } from 'vue';
 import { useBaseStore } from '@/stores/baseStore';
 import Card from '../components/Card.vue';
 import AddCardModal from '@/components/AddCardModal.vue';
-import IconArrowDown from '@/assets/arrowDown.svg';
-import IconArrowUp from '@/assets/arrowUp.svg';
+import IconArrowDown from '@/assets/icons/arrowDown.svg';
+import IconArrowUp from '@/assets/icons/arrowUp.svg';
 import draggable from 'vuedraggable';
 import type { TColumn } from '@/types/types';
 import { v4 as uuidv4 } from 'uuid';
@@ -71,10 +71,6 @@ const baseStore = useBaseStore();
 const props = defineProps<{
   column: TColumn;
 }>();
-
-// onMounted(() => {
-//   console.log('---onMounted', list);
-// });
 
 const list = computed(() => baseStore.filtredCards[props.column.code]);
 
@@ -96,11 +92,8 @@ const modalData = computed(() => ({
   stage: props.column.code,
 }));
 
-const log1 = (val) => {
-  console.log(`drag ${props.column.code}`, val);
-
+const onDrag = (val) => {
   if ('added' in val) {
-    console.log('---card', val.added.element.id);
     baseStore.changeCardStage(props.column.code, val.added.element.id);
   }
 };
