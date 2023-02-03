@@ -43,6 +43,8 @@ import AddCardModal from '@/components/AddCardModal.vue';
 import { RouterLink } from 'vue-router';
 import { useBaseStore } from '@/stores/baseStore';
 import api from '@/api/api';
+import { toast } from 'vue3-toastify';
+import 'vue3-toastify/dist/index.css';
 
 const baseStore = useBaseStore();
 
@@ -51,17 +53,21 @@ const filterOptions = computed(() => baseStore.projectsList);
 const showModal = ref(false);
 
 const saveAll = () => {
-  console.log('--saveAll');
-  api.saveCards(baseStore.cardsByStage);
+  try {
+    api.saveCards(baseStore.cardsByStage);
+    toast.success('Данные сохранены');
+  } catch (err) {
+    console.log('err saveCards', err);
+    toast.error('Ошибка сохранения данных');
+  }
 };
 
 const projectSelected = (val) => {
-  console.log('--projectSelected', val);
   baseStore.setSelectedProject(val.code);
 };
 </script>
 
-<style lang="css">
+<style>
 .board-header {
   margin: 50px 20px 20px;
   display: flex;

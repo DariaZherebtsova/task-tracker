@@ -13,14 +13,14 @@ const api = {
     await new Promise((resolve) => {
       setTimeout(() => {
         resolve(columns);
-      }, 1000);
+      }, 3000);
     }),
 
   getProjects: async (): Promise<TProject[]> =>
     await new Promise((resolve) => {
       setTimeout(() => {
         resolve(projects);
-      }, 1000);
+      }, 3000);
     }),
 
   saveCards: async (data): Promise<string> =>
@@ -28,7 +28,7 @@ const api = {
       setTimeout(() => {
         console.log('save cards', JSON.stringify(data));
         resolve('ok');
-      }, 1000);
+      }, 3000);
     }),
 };
 

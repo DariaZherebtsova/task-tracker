@@ -155,6 +155,7 @@ const submit = () => {
   } else {
     baseStore.addCard(newCard)
   }
+  
   emit('close');
 }
 </script>
