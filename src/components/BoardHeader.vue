@@ -15,14 +15,14 @@
         class="board-header__button"
         @click="showModal = true"
       >
-        Добавить карточку
-        <!-- <RouterLink to="/add-card">Добавить карточку</RouterLink> -->
+        <!-- Добавить карточку -->
+        <RouterLink to="/add-card">Добавить карточку</RouterLink>
       </button>
-      <AddCardModal
+      <Modal
         v-if="showModal"
         @close="showModal = false"
       >
-      </AddCardModal>
+      </Modal>
       <button
         class="board-header__button"
         @click="saveAll"
@@ -36,7 +36,7 @@
 <script setup lang="ts">
 import { ref, computed } from 'vue';
 import Select from '@/components/common/Select.vue';
-import AddCardModal from '@/components/AddCardModal.vue';
+import Modal from '@/components/common/Modal.vue';
 import { RouterLink } from 'vue-router';
 import { useBaseStore } from '@/stores/baseStore';
 import api from '@/api/api';

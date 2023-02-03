@@ -34,7 +34,6 @@ const baseStore = useBaseStore();
 
 onMounted(() => {
   watchEffect(() => {
-    console.log('---watchEffect', !isEmpty(baseStore.cardsByStage));
     if (!isEmpty(baseStore.cardsByStage)) {
       saveLocal({
         columns: baseStore.columns,

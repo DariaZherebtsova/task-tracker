@@ -38,19 +38,25 @@
     <div class="card-menu">
       <IconMenu class="card-menu__icon" />
     </div>
-    <AddCardModal
+    <Modal
       v-if="showModal"
       @close="showModal = false"
-      :data="modalData"
     >
-    </AddCardModal>
+      <AddCard
+        :data="modalData"
+        :edit="true"
+        :from-column="true"
+        @close="showModal = false"
+      ></AddCard>
+    </Modal>
   </div>
 </template>
 
 <script setup lang="ts">
 import { ref, computed } from 'vue';
 import { useBaseStore } from '@/stores/baseStore';
-import AddCardModal from '@/components/AddCardModal.vue';
+import AddCard from '@/components/AddCard.vue';
+import Modal from '@/components/common/Modal.vue';
 import type { TCard } from '@/types/types';
 import IconMenu from '@/assets/icons/overflowMenuSecond.svg';
 import IconNoteEdit from '@/assets/icons/noteEdit.svg';
@@ -66,7 +72,6 @@ const props = defineProps<{
 const showModal = ref(false);
 
 const modalData = computed(() => ({
-  edit: true,
   card: props.card,
   subtitle: props.stageName,
   options: baseStore.projectsList,

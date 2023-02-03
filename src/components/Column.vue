@@ -46,12 +46,17 @@
         Добавить
       </button>
     </div>
-    <AddCardModal
+    <Modal
       v-if="showModal"
       @close="showModal = false"
-      :data="modalData"
     >
-    </AddCardModal>
+      <AddCard
+        :data="modalData"
+        :edit="false"
+        :from-column="true"
+        @close="showModal = false"
+      ></AddCard>
+    </Modal>
   </div>
 </template>
 
@@ -59,12 +64,12 @@
 import { ref, computed } from 'vue';
 import { useBaseStore } from '@/stores/baseStore';
 import Card from '../components/Card.vue';
-import AddCardModal from '@/components/AddCardModal.vue';
+import AddCard from '@/components/AddCard.vue';
+import Modal from '@/components/common/Modal.vue';
 import IconArrowDown from '@/assets/icons/arrowDown.svg';
 import IconArrowUp from '@/assets/icons/arrowUp.svg';
 import draggable from 'vuedraggable';
 import type { TColumn } from '@/types/types';
-import { v4 as uuidv4 } from 'uuid';
 
 const baseStore = useBaseStore();
 
@@ -80,9 +85,8 @@ const pressedDownSortBtn = ref(false);
 const showModal = ref(false);
 
 const modalData = computed(() => ({
-  edit: false,
   card: {
-    id: uuidv4(),
+    id: '',
     title: '',
     stage: props.column.code,
     project: false,

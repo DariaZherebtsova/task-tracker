@@ -46,7 +46,6 @@ export const useBaseStore = defineStore('base', {
   actions: {
     async getData() {
       const localData = getLocal();
-      console.log('---store getData localData', isEmpty(localData));
       if (!isEmpty(localData)) {
         this.columns = localData.columns;
         this.cardsByStage = localData.cardsByStage;
@@ -107,7 +106,7 @@ export const useBaseStore = defineStore('base', {
       } else return false;
     },
 
-    changeCardStage(stage: string, id: number) {
+    changeCardStage(stage: string, id: string) {
       const card = this.cardsByStage[stage].find((card) => card.id === id);
       if (card) card.stage = stage;
     },

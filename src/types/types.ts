@@ -1,5 +1,5 @@
 export type TCard = {
-  id: number;
+  id: string;
   title: string;
   stage: string;
   project: string | boolean | string[];
