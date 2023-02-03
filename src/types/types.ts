@@ -20,3 +20,9 @@ export type TProject = {
   name: string;
   sort: number;
 };
+
+export type TLocalData = {
+  columns: TColumn[];
+  projects: Record<string, TProject>;
+  cardsByStage: Record<string, TCard[]>;
+};
