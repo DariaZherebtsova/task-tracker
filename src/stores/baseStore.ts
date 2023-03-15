@@ -51,30 +51,30 @@ export const useBaseStore = defineStore('base', {
         this.cardsByStage = localData.cardsByStage;
         this.projects = localData.projects;
         this.projectsList = Object.values(localData.projects);
-        this.projectsList = [
-          {
-            id: 0,
-            code: '',
-            name: 'Не выбрано',
-            sort: 0,
-          },
-          ...this.projectsList,
-        ];
+        // this.projectsList = [
+        //   {
+        //     id: 0,
+        //     code: '',
+        //     name: 'Не выбрано',
+        //     sort: 0,
+        //   },
+        //   ...this.projectsList,
+        // ];
         return;
       }
 
       Promise.all([api.getColumns(), api.getCards(), api.getProjects()])
         .then(([columns, cards, projects]) => {
           this.columns = columns;
-          this.projectsList = [
-            {
-              id: 0,
-              code: '',
-              name: 'Не выбрано',
-              sort: 0,
-            },
-            ...projects,
-          ];
+          this.projectsList = projects;
+          // [{
+          //     id: 0,
+          //     code: '',
+          //     name: 'Не выбрано',
+          //     sort: 0,
+          //   },
+          //   ...projects,
+          // ];
 
           projects.forEach((project: TProject) => {
             this.projects[project.code] = project;

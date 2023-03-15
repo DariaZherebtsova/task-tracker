@@ -3,12 +3,15 @@
     <div class="board-header__title">Карточки</div>
     <div class="board-header__actions">
       <div class="board-header__label">Проект:</div>
+      <!-- <vSelect
+        class="test-select"
+        :options="['Canada', 'United States']"
+      /> -->
       <Select
         class="board-header__select"
         :options="filterOptions"
         :initValue="[]"
         label="name"
-        :multiple="false"
         @select="projectSelected"
       ></Select>
       <button
@@ -35,7 +38,7 @@
 
 <script setup lang="ts">
 import { ref, computed } from 'vue';
-import Select from '@/components/common/Select.vue';
+import Select from '@/components/common/GoodSelect.vue';
 import Modal from '@/components/common/Modal.vue';
 import { RouterLink } from 'vue-router';
 import { useBaseStore } from '@/stores/baseStore';
@@ -61,7 +64,7 @@ const saveAll = () => {
 };
 
 const projectSelected = (val: TProject) => {
-  baseStore.setSelectedProject(val.code);
+  baseStore.setSelectedProject(val ? val.code : '');
 };
 </script>
 
@@ -92,21 +95,8 @@ const projectSelected = (val: TProject) => {
   color: var(--grey-dark-2);
 }
 
-.board-header__select.vue-select {
-  height: 32px;
-  width: 120px;
-  background: #d5dce5;
-  border-radius: 4px;
-  border: none;
-}
-
-.board-header__select input {
-  line-height: 24px;
-  text-align: center;
-}
-
-.board-header__select .vue-select-header .icon.arrow-downward {
-  margin-right: 8px;
+.board-header__select {
+  width: 150px;
 }
 
 .board-header__button {

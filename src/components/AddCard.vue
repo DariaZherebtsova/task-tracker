@@ -50,6 +50,7 @@
         :initValue="[]"
         label="name"
         :multiple="false"
+        :clearable="false"
         @select="stageSelected"
       ></Select>
       <div
@@ -94,7 +95,7 @@
 <script setup lang="ts">
 import { reactive, computed } from 'vue';
 import { useBaseStore } from '@/stores/baseStore';
-import Select from '@/components/common/Select.vue';
+import Select from '@/components/common/GoodSelect.vue';
 import type { TCard, TProject, TColumn } from '@/types/types';
 import { v4 as uuidv4 } from 'uuid';
 import { isEmpty } from '@/utils/index';
@@ -154,13 +155,9 @@ const setScore = (payload: FocusEvent) => {
 };
 
 const projectSelected = (projects: TProject[]) => {
-  if (projects.length === 1) {
-    if (projects[0].name === 'Не выбрано') {
-      newCard.project = false;
-    } else {
-      newCard.project = projects[0].code;
-      newCard.projectName = [projects[0].name];
-    }
+  console.log('projectSelected', projects);
+  if (projects.length === 0) {
+    newCard.project = false;
   } else {
     newCard.project = projects.map(item => item.code);
     newCard.projectName = projects.map(item => item.name);
@@ -203,7 +200,7 @@ const submit = () => {
 }
 </script>
 
-<style>
+<style lang="scss">
 .add-card-container {
   padding: 30px;
   width: 380px;
@@ -279,13 +276,9 @@ const submit = () => {
   outline: 1px solid var(--grey-middle);
 }
 
-.add-card__select.tt-select.vue-select {
+.add-card__select.tt-select.v-select {
   background-color: var(--grey-light-1);
-  width: 100%;
-}
-
-.add-card__select .vue-input input {
-  padding-left: 12px;
+  padding-left: 8px;
 }
 
 .add-card-default-button {
