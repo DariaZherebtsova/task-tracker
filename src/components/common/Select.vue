@@ -9,7 +9,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref } from 'vue';
+import { ref, onMounted } from 'vue';
 import vSelect from 'vue-select';
 import 'vue-select/dist/vue-select.css';
 
@@ -18,6 +18,10 @@ const emit = defineEmits(['select']);
 const props = defineProps<{
   initValue: Array<any>;
 }>();
+
+onMounted(() => {
+  console.log('--initValue', props.initValue);
+});
 
 const selectedValue = ref(props.initValue);
 
@@ -29,7 +33,7 @@ const selectUpdate = (val) => {
 
 <style scoped lang="scss">
 .tt-select {
-  &::v-deep {
+  &::v-deep(.child) {
     --vs-controls-size: 0.7;
     --vs-border-style: none;
     --vs-font-size: 13px;

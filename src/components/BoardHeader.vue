@@ -38,7 +38,7 @@
 
 <script setup lang="ts">
 import { ref, computed } from 'vue';
-import Select from '@/components/common/GoodSelect.vue';
+import Select from '@/components/common/Select.vue';
 import Modal from '@/components/common/Modal.vue';
 import { RouterLink } from 'vue-router';
 import { useBaseStore } from '@/stores/baseStore';
@@ -49,7 +49,11 @@ import 'vue3-toastify/dist/index.css';
 
 const baseStore = useBaseStore();
 
-const filterOptions = computed(() => baseStore.projectsList);
+// const filterOptions = computed(() => baseStore.projectsList);
+const filterOptions = computed(() => {
+  console.log('--baseStore.projectsList', baseStore.projectsList);
+  return baseStore.projectsList;
+});
 
 const showModal = ref(false);
 

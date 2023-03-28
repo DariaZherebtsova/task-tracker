@@ -7,13 +7,19 @@
           class="card__icon-button"
           @click="showModal = true"
         >
-          <IconNoteEdit class="card__header-icon" />
+          <SvgIcon
+            icon="noteEdit"
+            class="card__header-icon"
+          />
         </button>
         <button
           class="card__icon-button"
           @click="deleteCard"
         >
-          <IconGarbage class="card__header-icon" />
+          <SvgIcon
+            icon="garbage"
+            class="card__header-icon"
+          />
         </button>
       </div>
       <div class="card__body">
@@ -36,7 +42,10 @@
       </div>
     </div>
     <div class="card-menu">
-      <IconMenu class="card-menu__icon" />
+      <SvgIcon
+        icon="overflowMenuSecond"
+        class="card__header-icon"
+      />
     </div>
     <Modal
       v-if="showModal"
@@ -58,9 +67,6 @@ import { useBaseStore } from '@/stores/baseStore';
 import AddCard from '@/components/AddCard.vue';
 import Modal from '@/components/common/Modal.vue';
 import type { TCard } from '@/types/types';
-import IconMenu from '@/assets/icons/overflowMenuSecond.svg';
-import IconNoteEdit from '@/assets/icons/noteEdit.svg';
-import IconGarbage from '@/assets/icons/garbage.svg';
 
 const baseStore = useBaseStore();
 

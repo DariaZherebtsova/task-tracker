@@ -95,7 +95,7 @@
 <script setup lang="ts">
 import { reactive, computed } from 'vue';
 import { useBaseStore } from '@/stores/baseStore';
-import Select from '@/components/common/GoodSelect.vue';
+import Select from '@/components/common/Select.vue';
 import type { TCard, TProject, TColumn } from '@/types/types';
 import { v4 as uuidv4 } from 'uuid';
 import { isEmpty } from '@/utils/index';

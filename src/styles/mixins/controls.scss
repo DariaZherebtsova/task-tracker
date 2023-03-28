@@ -1,0 +1,70 @@
+@mixin button {
+  @include textLink;
+  @include resetButton;
+  @include centering;
+  transition: background, opacity 0.2s linear;
+  height: 50px;
+}
+
+@mixin primaryButton {
+  @include button;
+  background: var(--red);
+  color: white;
+  &:hover {
+    opacity: 0.8;
+  }
+  &:disabled {
+    cursor: unset;
+    opacity: 0.4;
+  }
+}
+
+@mixin secondaryButton {
+  @include button;
+  background: white;
+  border: 1px solid var(--red);
+  color: var(--red);
+  &:hover {
+    opacity: 0.8;
+  }
+  &:disabled {
+    cursor: unset;
+    opacity: 0.4;
+  }
+}
+
+@mixin tertiaryButton {
+  @include button;
+  background: $grey5;
+  color: $grey1;
+  &:hover {
+    background: $grey4;
+  }
+  &:disabled {
+    background: $grey5;
+    cursor: unset;
+    opacity: 0.4;
+  }
+}
+
+@mixin input {
+  @include text(2);
+  padding: 14px 20px;
+  box-sizing: border-box;
+  height: 50px;
+  background: white;
+  border: 1px solid $grey3;
+  color: black;
+  outline: none;
+  transition: border-color 0.2s linear;
+  &:focus {
+    border-color: $grey2;
+  }
+  &::placeholder {
+    @include text(2);
+    color: $grey3;
+  }
+  &.error {
+    border-color: var(--red);
+  }
+}

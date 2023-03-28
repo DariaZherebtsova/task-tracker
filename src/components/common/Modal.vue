@@ -8,7 +8,10 @@
               class="modal__close-button"
               @click="emit('close')"
             >
-              <IconCloseBig class="modal__close-icon" />
+              <SvgIcon
+                icon="closeBig"
+                class="modal__close-icon"
+              />
             </button>
             <slot></slot>
           </div>
@@ -19,8 +22,6 @@
 </template>
 
 <script setup lang="ts">
-import IconCloseBig from '@/assets/icons/closeBig.svg';
-
 const emit = defineEmits(['close']);
 </script>
 

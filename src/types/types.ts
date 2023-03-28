@@ -26,3 +26,18 @@ export type TLocalData = {
   projects: Record<string, TProject>;
   cardsByStage: Record<string, TCard[]>;
 };
+
+export type SeriesSeason = {
+  number: number;
+  episodes: SeriesEpisode[];
+};
+
+export type SeriesEpisode = {
+  number: number;
+  source: string;
+  description: string;
+};
+
+export interface ComponentPublicInstance<T> {
+  $el: T;
+}

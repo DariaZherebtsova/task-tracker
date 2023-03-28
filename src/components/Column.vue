@@ -8,18 +8,24 @@
           class="column__header-sort"
           @click="sortDown"
         >
-          <IconArrowDown
-            class="column__header-icon"
-            :class="{ pressed: pressedDownSortBtn }"
+          <SvgIcon
+            icon="arrowDown"
+            :class="[
+              'column__header-icon',
+              { 'column__header-icon--pressed': pressedDownSortBtn },
+            ]"
           />
         </button>
         <button
           class="column__header-sort"
           @click="sortUp"
         >
-          <IconArrowUp
-            class="column__header-icon"
-            :class="{ pressed: pressedUpSortBtn }"
+          <SvgIcon
+            icon="arrowUp"
+            :class="[
+              'column__header-icon',
+              { 'column__header-icon--pressed': pressedUpSortBtn },
+            ]"
           />
         </button>
       </div>
@@ -154,12 +160,15 @@ const sortDown = () => {
   padding: 0;
 }
 
-.column__header-icon.pressed path {
-  fill: var(--grey-dark-4);
-}
-
 .column__header-icon path {
   fill: var(--grey-dark-3);
+}
+
+.column__header-icon--pressed path {
+  fill: var(--grey-dark-4);
+}
+.column__header-icon:hover {
+  cursor: pointer;
 }
 
 .column-action {
