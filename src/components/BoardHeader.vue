@@ -51,7 +51,6 @@ const baseStore = useBaseStore();
 
 // const filterOptions = computed(() => baseStore.projectsList);
 const filterOptions = computed(() => {
-  console.log('--baseStore.projectsList', baseStore.projectsList);
   return baseStore.projectsList;
 });
 

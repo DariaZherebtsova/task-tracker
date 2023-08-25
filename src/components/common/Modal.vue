@@ -35,7 +35,7 @@ const emit = defineEmits(['close']);
   height: 100%;
   background-color: rgba(0, 0, 0, 0.2);
   display: table;
-  transition: opacity 0.3s ease;
+  transition: opacity 2s ease;
 }
 
 .modal__wrapper {

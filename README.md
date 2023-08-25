@@ -4,12 +4,14 @@
 
 ![Screenshot](/src/assets/screenshot.png)
 
+https://lucky-piroshki-743276.netlify.app/
+
 Технологии - VueJS 3.0 + Typescript  
 Стиль - Composition API  
 
 запуск под разработку  
 ```sh
-npm run dev
+npm run serve
 ```
 
 cборка проекта - [Vite](https://vitejs.dev/config/)    

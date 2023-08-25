@@ -155,7 +155,6 @@ const setScore = (payload: FocusEvent) => {
 };
 
 const projectSelected = (projects: TProject[]) => {
-  console.log('projectSelected', projects);
   if (projects.length === 0) {
     newCard.project = false;
   } else {
@@ -278,7 +277,7 @@ const submit = () => {
 
 .add-card__select.tt-select.v-select {
   background-color: var(--grey-light-1);
-  padding-left: 8px;
+  // padding-left: 8px;
 }
 
 .add-card-default-button {

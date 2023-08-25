@@ -25,7 +25,6 @@ import { onMounted, watchEffect, computed } from 'vue';
 import BoardHeader from '../components/BoardHeader.vue';
 import Column from '@/components/Column.vue';
 import Loding from '@/components/Loading.vue';
-import Counter from '@/components/common/Counter.vue';
 import { useBaseStore } from '@/stores/baseStore';
 import { saveLocal } from '@/services/saveLocal';
 import { isEmpty } from '@/utils/index';

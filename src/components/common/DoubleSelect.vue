@@ -125,7 +125,7 @@ const changeEpisode = (number: number) => {
 .video-header {
   width: 300px;
   height: 300px;
-  background-color: darkcyan;
+  background-color: var(--grey-blue);
   &__select {
     position: relative;
     width: 120px;

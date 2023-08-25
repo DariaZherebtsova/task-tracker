@@ -9,7 +9,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref, onMounted } from 'vue';
+import { ref } from 'vue';
 import vSelect from 'vue-select';
 import 'vue-select/dist/vue-select.css';
 
@@ -18,10 +18,6 @@ const emit = defineEmits(['select']);
 const props = defineProps<{
   initValue: Array<any>;
 }>();
-
-onMounted(() => {
-  console.log('--initValue', props.initValue);
-});
 
 const selectedValue = ref(props.initValue);
 
